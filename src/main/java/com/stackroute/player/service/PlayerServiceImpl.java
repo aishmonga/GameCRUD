@@ -46,4 +46,10 @@ public class PlayerServiceImpl {
     public void deletePlayerById(int id) {
         playerRepository.deleteById(id);
     }
+
+    public List<Player> searchByPlayerName(String playerName) {
+        List<Player> player = playerRepository.searchByPlayerName(playerName);
+        return player;
+
+    }
 }

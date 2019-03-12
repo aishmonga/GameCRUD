@@ -2,16 +2,23 @@ package com.stackroute.player.controller;
 
 import com.stackroute.player.domain.Player;
 import com.stackroute.player.service.PlayerServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.Media;
 import java.util.List;
 
 
 @RestController
 @RequestMapping("api/v1")
+@Api(value = "PlayerControllerAPI" ,produces = MediaType.APPLICATION_JSON_VALUE)
 public class PlayerController {
 
     private PlayerServiceImpl playerServiceImpl;
@@ -27,19 +34,20 @@ public class PlayerController {
         return new ResponseEntity<Player>(savedPlayer, HttpStatus.OK);
     }
 
-
+    @ApiOperation("Gets the information of all players")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK" ,response = Player.class)})
     @GetMapping("/players")
     public ResponseEntity<List<Player>> getAllPlayer(){
         List<Player> playerList =  playerServiceImpl.getPlayers();
         return new ResponseEntity<List<Player>>(playerList , HttpStatus.OK);
     }
 
-    @GetMapping("/player/{id}")
-
-    public ResponseEntity<Player> getPlayerById(@PathVariable int id){
-        Player playerById = playerServiceImpl.getPlayerById(id);
-        return new ResponseEntity<Player>(playerById , HttpStatus.OK);
-    }
+//    @GetMapping("/player/{id}")
+//
+//    public ResponseEntity<Player> getPlayerById(@PathVariable int id){
+//        Player playerById = playerServiceImpl.getPlayerById(id);
+//        return new ResponseEntity<Player>(playerById , HttpStatus.OK);
+//    }
 
     @DeleteMapping("player/{id}")
 
@@ -53,6 +61,13 @@ public class PlayerController {
     public ResponseEntity<List<Player>> updatedPlayer(@PathVariable int id , @RequestBody Player player){
         playerServiceImpl.updatedPlayerScores(player,id);
         return new ResponseEntity<List<Player>>(playerServiceImpl.getPlayers() , HttpStatus.OK);
+    }
+
+    @GetMapping("player/{name}")
+
+    public ResponseEntity<List<Player>> searchByPlayerName(@PathVariable String name){
+        List<Player> player = playerServiceImpl.searchByPlayerName(name);
+        return new ResponseEntity<List<Player>>(player , HttpStatus.OK);
     }
 
 }
