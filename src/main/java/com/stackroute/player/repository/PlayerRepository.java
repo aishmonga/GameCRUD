@@ -12,4 +12,6 @@ public interface PlayerRepository extends CrudRepository <Player, Integer >{
     @Query(value = "Select p from Player p where p.playerName= ?1" )
     List<Player> searchByPlayerName (String playerName);
 
+//    @Query(value = "Select * from Player p" )
+//    List<Player> searchAll ();
 }
